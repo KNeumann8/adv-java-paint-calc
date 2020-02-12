@@ -1,8 +1,11 @@
 package edu.wctc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Room {
+public class Room implements Serializable, Paintable {
+    private static int roomCount;
+    private int roomNum;
 
     private ArrayList<Wall> wallList;
 
@@ -17,6 +20,8 @@ public class Room {
         wallList.add(wallC);
         Wall wallD = new Wall(width, height);
         wallList.add(wallD);
+        roomCount++;
+        roomNum = roomCount;
     }
 
     public double getArea() {
@@ -28,5 +33,33 @@ public class Room {
         }
 
         return area;
+    }
+
+
+
+    public String toString(){
+      return "A Room has an area of " + getArea();
+    }
+
+
+
+    @Override
+    public double getPremiumCost() {
+        double incr = 0;
+        for(Wall w : wallList){
+            incr += w.getArea();
+        }
+        return (Math.ceil(incr/530))*PREMIUM_PAINT_COST_PER_GALLON;
+    }
+
+
+
+    @Override
+    public double getStandardCost() {
+        double incr = 0;
+        for(Wall w : wallList){
+            incr += w.getArea();
+        }
+        return (Math.ceil(incr/420))*STANDARD_PAINT_COST_PER_GALLON;
     }
 }
